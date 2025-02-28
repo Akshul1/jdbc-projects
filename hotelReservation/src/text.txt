@@ -1,0 +1,9 @@
+in this i will use prepaid statement insted of statement 
+
+Database: Use MySQL or PostgreSQL to store the student data.
+Features:
+Add a new student record.
+Display all student records.
+Update student details (marks, course).
+Delete student records.
+Search for students based on name or roll number.
