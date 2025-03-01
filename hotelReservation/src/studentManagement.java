@@ -1,11 +1,12 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Scanner;
 
 // Student Management System 
+// update this with prepared statement
 public class studentManagement {
     private static String url= "jdbc:mysql://localhost:3306/hotel_reservation";
     private static String username = "root";
@@ -24,7 +25,7 @@ public class studentManagement {
         try {
             Connection con = DriverManager.getConnection(url, username, password);
             Scanner sc = new Scanner(System.in);
-            Statement stmt = con.createStatement();
+            // Statement stmt = con.createStatement();
 
             
 
@@ -47,23 +48,23 @@ public class studentManagement {
 
                 switch (choice) {
                     case 1:
-                        addStudent(con, stmt, sc);
+                        addStudent(con, sc);
                         break;
 
                     case 2:
-                        studentRecord(con, stmt);
+                        studentRecord(con);
                         break;   
                         
                     case 3:
-                        updateStuDetail(con, stmt, sc);
+                        updateStuDetail(con, sc);
                         break;
 
                     case 4:
-                        deleteStuRecord(con, stmt, sc);
+                        deleteStuRecord(con, sc);
                         break;
 
                     case 5:
-                        getGrade(con, stmt, sc);
+                        getGrade(con, sc);
                         break;
 
                     case 6:
@@ -85,7 +86,7 @@ public class studentManagement {
         }
         
     }
-    public static void addStudent(Connection con, Statement stmt,Scanner sc){
+    public static void addStudent(Connection con,Scanner sc){
 
         System.out.println("Enter the student name");
         String name = sc.next();
@@ -93,8 +94,12 @@ public class studentManagement {
         String grade = sc.next();
 
         try {
-            String query = "insert into student_db(name, grade) values('"+name+"', '"+grade+"')";
-            int rowsAffected = stmt.executeUpdate(query);
+            String query = "insert into student_db(name, grade) values(?, ?)";
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, grade);
+
+            int rowsAffected = preparedStatement.executeUpdate();
 
             if (rowsAffected>0) {
                 System.out.println("Student record added successfully");
@@ -107,17 +112,21 @@ public class studentManagement {
         }
     }
 
-    public static void studentRecord(Connection con, Statement stmt){
+    public static void studentRecord(Connection con){
 
         try {
             String query = "select * from student_db";
-            ResultSet rs = stmt.executeQuery(query);
+            PreparedStatement preparedstatement = con.prepareStatement(query);
+            ResultSet rs = preparedstatement.executeQuery(query);
 
             while (rs.next()) {
+                int id = rs.getInt("id");
                 String name = rs.getString("name");
                 String grade = rs.getString("grade");
 
-                System.out.println("Name: "+name+" Grade: "+grade);
+                System.out.println("====================================");
+                System.out.println("id"+id+"Name: "+name+" Grade: "+grade);
+                System.out.println("====================================");
             }
                 
             
@@ -127,7 +136,7 @@ public class studentManagement {
     
     }
 
-    public static void updateStuDetail(Connection con, Statement stmt, Scanner sc){
+    public static void updateStuDetail(Connection con, Scanner sc){
 // change the grades with id not with the name
         try {
             System.out.println("Enter the student id");
@@ -135,8 +144,11 @@ public class studentManagement {
             System.out.println("Enter the new grade of student");
             String grade = sc.next();
 
-            String query = "update student_db set grade = '"+grade+"' where id = '"+id+"'";
-            int rowsAffected = stmt.executeUpdate(query);
+            String query = "update student_db set grade = ? where id = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            preparedStatement.setString(1, grade);
+            preparedStatement.setInt(2, id);
+            int rowsAffected = preparedStatement.executeUpdate();
 
             if (rowsAffected>0) {
                 System.out.println("Student record updated successfully");
@@ -148,13 +160,15 @@ public class studentManagement {
         }
     }
 
-    public static void deleteStuRecord(Connection con, Statement stmt, Scanner sc) {
+    public static void deleteStuRecord(Connection con, Scanner sc) {
         System.out.println("Enter the student id to delete");
         int id = sc.nextInt();
 
         try {
-            String query = "delete from student_db where id = '"+id+"'";
-            int rowsAffected = stmt.executeUpdate(query);
+            String query = "delete from student_db where id = ?";
+            PreparedStatement preparedstatement = con.prepareStatement(query);
+            preparedstatement.setInt(1, id);
+            int rowsAffected = preparedstatement.executeUpdate();
 
             if (rowsAffected > 0) {
                 System.out.println("Student record deleted successfully");
@@ -167,19 +181,21 @@ public class studentManagement {
     }
 
 
-    public static void getGrade(Connection con, Statement stmt, Scanner sc) {
-        System.out.println("Enter the student name");
-        String name = sc.next();
+    public static void getGrade(Connection con,  Scanner sc) {
         System.out.println("Enter the student roll number");
         int roll = sc.nextInt();
 
         try {
-            String query = "select grade from student_db where name = '"+name+"' or id = '"+roll+"'";
-            ResultSet rs = stmt.executeQuery(query);
+            String query = "select grade from student_db where id = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            preparedStatement.setInt(1, roll);
+            ResultSet rs = preparedStatement.executeQuery();
 
-            while (rs.next()) {
+            if(rs.next()) {
                 String grade = rs.getString("grade");
                 System.out.println("Grade: "+grade);
+            }else{
+            System.out.println("Student not found");
             }
         } catch (SQLException e) {
             e.printStackTrace();
