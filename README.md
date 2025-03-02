@@ -1,107 +1,36 @@
-<h1>JDBC PROJECTS</h1>
-This repository contains two separate systems: a Hotel Reservation System and a Student Management System. Both systems are built using Java and interact with a MySQL database.
+# JDBC Practice Projects
 
-1. Hotel Reservation System
-The Hotel Reservation System allows users to book rooms in a hotel and manage their reservations. The system provides an interface for customers to check availability, make reservations, view their bookings, and update or cancel their reservations.
+This repository contains various Java projects developed using **JDBC (Java Database Connectivity)** to practice and demonstrate database interactions with **MySQL**. These projects serve as practice exercises for connecting Java applications with a MySQL database, performing CRUD (Create, Read, Update, Delete) operations, and other database manipulations.
 
-Features:
-View available rooms
-Make a new reservation
-Cancel or update a reservation
-Check-in and check-out functionality
-Database interaction to store reservation details
-Technologies:
-Java (JDBC)
-MySQL
-Setup Instructions:
-Clone the repository:
+### Projects Included:
 
-bash
-Copy
-git clone https://github.com/<your-username>/jdbc-projects.git
-Database Setup:
+1. **Student Management System**
+2. **Hotel Reservation System**
+3. **Banking System**
 
-Create a MySQL database called hotel_reservation and set up the required tables.
-Use the following script to create the database and tables:
-sql
-Copy
-CREATE DATABASE hotel_reservation;
+Each project includes its own set of functionalities designed to manage data, with the core focus being interaction with MySQL databases via JDBC.
 
-USE hotel_reservation;
+---
 
-CREATE TABLE reservations (
+## 1. Student Management System
+
+### Overview
+The **Student Management System** allows users to manage student records in a database. The system supports operations like adding, updating, deleting, and displaying student records, as well as searching for a student by their ID and displaying their grade.
+
+### Features:
+- **Add a new student**: Insert a student's name and grade.
+- **Display all student records**: View all stored student records.
+- **Update student details**: Modify student grades by ID.
+- **Delete student record**: Remove student records by their ID.
+- **Search student grade**: Retrieve and display the grade of a student by ID.
+
+### Step 2: Create Project-Specific Tables
+
+Create the following table in MySQL to store student data:
+
+```sql
+CREATE TABLE student_db (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    check_in DATE NOT NULL,
-    check_out DATE NOT NULL,
-    room_type VARCHAR(50),
-    status VARCHAR(20)
+    name VARCHAR(100),
+    grade VARCHAR(10)
 );
-Database Connection:
-
-Update the database connection details in your HotelReservationSystem code (username, password, etc.) to match your local MySQL setup.
-Run the Application:
-
-Compile and run the application using an IDE or via the command line.
-Test the System:
-
-Interact with the hotel reservation system through the console interface.
-2. Student Management System
-The Student Management System is designed to manage student records. It allows you to add, update, delete, and display student information, such as their grades, courses, and personal details.
-
-Features:
-Add new student records
-Update student information (e.g., grades, courses)
-Delete student records
-Display all student records
-Search for students by name or roll number
-Technologies:
-Java (JDBC)
-MySQL
-Setup Instructions:
-Clone the repository:
-
-bash
-Copy
-git clone https://github.com/<your-username>/jdbc-projects.git
-Database Setup:
-
-Create a MySQL database called student_db and set up the required tables.
-Use the following script to create the database and tables:
-sql
-Copy
-CREATE DATABASE student_db;
-
-USE student_db;
-
-CREATE TABLE students (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    grade VARCHAR(10),
-    course VARCHAR(50)
-);
-Database Connection:
-
-Update the database connection details in your StudentManagementSystem code (username, password, etc.) to match your local MySQL setup.
-Run the Application:
-
-Compile and run the application using an IDE or via the command line.
-Test the System:
-
-Interact with the student management system through the console interface.
-Getting Started
-Clone the repository:
-
-bash
-Copy
-git clone https://github.com/<your-username>/jdbc-projects.git
-Navigate to the project directory:
-
-bash
-Copy
-cd jdbc-projects
-Follow the setup instructions for each system as outlined above.
-
-Run both systems and start managing hotel reservations and student records.
-
-License
